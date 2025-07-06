@@ -1,6 +1,6 @@
-const express = require("express");
-const cors = require("cors");
-const ytdl = require("ytdl-core");
+import express from 'express';
+import cors from 'cors';
+import ytdl from 'ytdl-core';
 
 const app = express();
 app.use(cors());
@@ -14,11 +14,13 @@ app.get("/stream", async (req, res) => {
     const info = await ytdl.getInfo(url);
     const format = ytdl.chooseFormat(info.formats, { quality: "highest", filter: "videoandaudio" });
 
-    res.send(format.url); // return direct video URL
+    res.send(format.url);
   } catch (err) {
-    res.status(500).send("Failed to get stream: " + err.message);
+    res.status(500).send("Error: " + err.message);
   }
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
